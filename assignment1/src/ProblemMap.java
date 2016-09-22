@@ -79,7 +79,25 @@ public class ProblemMap extends Problem {
 		Search search  = new Search(problem);
 		
 		System.out.println("BreadthFirstTreeSearch:\t\t" + search.BreadthFirstTreeSearch());
-		
 		System.out.println("BreadthFirstGraphSearch:\t" + search.BreadthFirstGraphSearch());
+		
+		System.out.println("--------");
+		System.out.println("DepthFirstTreeSearch:\t\t" + search.DepthFirstTreeSearch());
+		System.out.println("DepthFirstGraphSearch:\t\t" + search.DepthFirstGraphSearch());
+		System.out.println("--------");
+		
+		System.out.println("UniformCostTreeSearch:\t\t" + search.UniformCostTreeSearch());
+		System.out.println("UniformCostGraphSearch:\t\t" + search.UniformCostGraphSearch());
+		System.out.println("--------");
+		System.out.println("GreedyBestFirstTreeSearch:\t\t" + search.GreedyBestFirstTreeSearch());
+		System.out.println("GreedyBestFirstGraphSearch:\t\t" + search.GreedyBestFirstGraphSearch());
+		
+		System.out.println("--------");
+		System.out.println("AstarTreeSearch:\t\t" + search.AstarTreeSearch());
+		System.out.println("AstarGraphSearch:\t\t" + search.AstarGraphSearch());
+
+		System.out.println("--------");
+		System.out.println("IterativeDeepeningTreeSearch:\t\t" + search.IterativeDeepeningTreeSearch() );
+		System.out.println("IterativeDeepeningGraphSearch:\t\t" + search.IterativeDeepeningGraphSearch());
 	}	
 }
