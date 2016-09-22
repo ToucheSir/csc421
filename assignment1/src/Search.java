@@ -66,6 +66,7 @@ public class Search {
 	
 	//For statistics purposes
 	int cnt; //count expansions
+	int depth;
 	List<Node> node_list; //store all nodes ever generated
 	Node initialNode; //initial node based on initial state
 	//
@@ -123,7 +124,7 @@ public class Search {
 	private String TreeSearchDepthLimited(Frontier frontier, int limit) {
 		//TODO
 		cnt = 0; 
-		int depth=0;
+		depth=0;
 		node_list = new ArrayList<Node>();
 		
 		initialNode = MakeNode(problem.initialState); 
@@ -151,7 +152,33 @@ public class Search {
 
 	private String GraphSearchDepthLimited(Frontier frontier, int limit) {
 		//TODO
-		return null;	
+		cnt = 0; 
+		depth=0;
+		node_list = new ArrayList<Node>();
+		
+		initialNode = MakeNode(problem.initialState); 
+		node_list.add( initialNode );
+		
+		Set<Object> explored = new HashSet<Object>(); //empty set
+		frontier.insert( initialNode );
+while(true) {
+			
+			if(frontier.isEmpty())
+				return null;
+			
+			Node node = frontier.remove();
+			
+			if( problem.goal_test(node.state) )
+				return Solution(node);
+			
+			if( (!explored.contains(node.state))&& (depth<limit) ) {
+				explored.add(node.state);
+				frontier.insertAll(Expand(node,problem));
+				cnt++;
+				depth++;
+			}
+		}
+			
 	}
 
 	private Node MakeNode(Object state) {
