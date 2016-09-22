@@ -56,12 +56,17 @@ public class Search {
 	//Iterative deepening, tree-search and graph-search
 	public String IterativeDeepeningTreeSearch() {
 		//TODO
-		return null;
+		for(int limit=0;limit<0;limit++){
+			return TreeSearchDepthLimited(new FrontierLIFO(), limit);
+		}
+		
 	}
 	
 	public String IterativeDeepeningGraphSearch() {
 		//TODO
-		return null;	
+		for(int limit=0;limit<0;limit++){
+			return GraphSearchDepthLimited(new FrontierLIFO(), limit);
+		}	
 	}
 	
 	//For statistics purposes
