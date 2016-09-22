@@ -122,7 +122,31 @@ public class Search {
 	
 	private String TreeSearchDepthLimited(Frontier frontier, int limit) {
 		//TODO
-		return null;
+		cnt = 0; 
+		int depth=0;
+		node_list = new ArrayList<Node>();
+		
+		initialNode = MakeNode(problem.initialState); 
+		node_list.add( initialNode );
+		
+		frontier.insert( initialNode );
+		while(true) {
+			
+			if(frontier.isEmpty())
+				return null;
+			
+			Node node = frontier.remove();
+			
+			if( problem.goal_test(node.state) )
+				return Solution(node);
+			
+			if(depth<limit){
+				frontier.insertAll(Expand(node,problem));
+			}
+			cnt++;
+			depth++;
+			
+	}
 	}
 
 	private String GraphSearchDepthLimited(Frontier frontier, int limit) {
