@@ -151,7 +151,22 @@ public class ProblemCannibals extends Problem {
 	
 	double step_cost(Object fromState, Object toState) { return 1; }
 
-	public double h(Object state) { return 0; }
+	public double h(Object state) {  
+	StateCannibals can_state = (StateCannibals) state;
+	
+	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==6) return 9;
+	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==5) return 7;
+	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==4) return 5;
+	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==3) return 3;
+	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==2) return 1;
+	
+	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==4) return 8;
+	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==3) return 6;
+	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==2) return 4;
+	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==1) return 2;
+	
+	return 0;
+	}
 
 
 	public static void main(String[] args) throws Exception {
