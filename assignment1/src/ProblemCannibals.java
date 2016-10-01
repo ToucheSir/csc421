@@ -151,21 +151,28 @@ public class ProblemCannibals extends Problem {
 	
 	double step_cost(Object fromState, Object toState) { return 1; }
 
-	public double h(Object state) {  
-	StateCannibals can_state = (StateCannibals) state;
-	
-	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==6) return 9;
-	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==5) return 7;
-	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==4) return 5;
-	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==3) return 3;
-	if(can_state.canArray[2]!=0 && can_state.canArray[0]+can_state.canArray[1]==2) return 1;
-	
-	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==4) return 8;
-	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==3) return 6;
-	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==2) return 4;
-	if(can_state.canArray[2]==0 && can_state.canArray[0]+can_state.canArray[1]==1) return 2;
-	
-	return 0;
+	public double h(Object state) {
+        StateCannibals can_state = (StateCannibals) state;
+        int onLeft = can_state.canArray[cannL] + can_state.canArray[missL];
+
+        if (can_state.canArray[boatL] != 0) {
+            switch (onLeft) {
+                case 6: return 9;
+                case 5: return 7;
+                case 4: return 5;
+                case 3: return 3;
+                case 2: return 1;
+            }
+        } else {
+            switch (onLeft) {
+                case 4: return 8;
+                case 3: return 6;
+                case 2: return 4;
+                case 1: return 2;
+            }
+        }
+
+        return 0;
 	}
 
 
@@ -175,9 +182,12 @@ public class ProblemCannibals extends Problem {
 		problem.initialState = new StateCannibals(canArray); 
 		
 		Search search  = new Search(problem);
-		
-		System.out.println("BreadthFirstTreeSearch:\t\t" + search.BreadthFirstTreeSearch());
 
-		System.out.println("BreadthFirstGraphSearch:\t" + search.BreadthFirstGraphSearch());
+        System.out.println("GreedyBestFirstTreeSearch:\t\t" + search.GreedyBestFirstTreeSearch());
+        System.out.println("GreedyBestFirstGraphSearch:\t\t" + search.GreedyBestFirstGraphSearch());
+
+        System.out.println("--------");
+        System.out.println("AstarTreeSearch:\t\t" + search.AstarTreeSearch());
+        System.out.println("AstarGraphSearch:\t\t" + search.AstarGraphSearch());
 	}
 }
