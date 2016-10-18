@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class CSPZebra extends CSP {
     private static final String[] colours = {"blue", "green", "ivory", "red", "yellow" };
     private static final String[] drinks = {"coffee", "milk", "orange juice", "tea", "water"};
@@ -8,76 +6,65 @@ public class CSPZebra extends CSP {
     private static final String[] cigarettes = {"chesterfield", "kools", "lucky-strike", "old-gold", "parliament"};
     private static final Integer[] domains = { 1, 2, 3, 4, 5 };
 
+    private static final String[][] equalPairs = {
+            {"englishman", "red"},
+            {"spaniard", "dog"},
+            {"coffee", "green"},
+            {"ukrainian", "tea"},
+            {"old-gold", "snails"},
+            {"kools", "yellow"},
+            {"lucky-strike", "orange juice"},
+            {"japanese", "parliament"},
+    };
+
+    private static final String[][] adjPairs = {
+            {"chesterfield", "fox"},
+            {"kools", "horse"},
+            {"norwegian", "blue"},
+    };
 
     @Override
     public boolean isGood(Object X, Object Y, Object x, Object y) {
-        System.out.println(X);
-        System.out.println(Y);
-        System.out.println(x);
-        System.out.println(y);
-        boolean good = _isGood(X, Y, x, y);
-        System.out.println(good);
-        System.out.println("~~~");
+        if (C.containsKey(X) && C.get(X).contains(Y) && x.equals(y)) {
+            return false;
+        }
 
-        return good;
+        // _ at the same house as _
+        for (String[] pair : equalPairs) {
+            if (pairEquals(X, Y, pair[0], pair[1]) && !x.equals(y)) {
+                return false;
+            }
+        }
+
+        // The green house is directly to the right of the ivory house
+        if (pairEquals(X, Y, "green", "ivory") && (int)x - (int)y != 1) {
+            return false;
+        }
+
+        // _ is in the house next to _
+        for (String[] pair : adjPairs) {
+            if (pairEquals(X, Y, pair[0], pair[1]) && !adjacent(x, y)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private boolean _isGood(Object X, Object Y, Object x, Object y) {
-        if (binaryEquals(X, Y, "spaniard", "dog", x, y)) {
-            return true;
-        }
-        if (binaryEquals(X, Y, "coffee", "green", x, y)) {
-            return true;
-        }
-        if (binaryEquals(X, Y, "ukrainian", "tea", x, y)) {
-            return true;
-        }
-        if (X.equals("green") && Y.equals("ivory") && (int)x - (int)y == 1) {
-            return true;
-        }
-        if (binaryEquals(X, Y, "old-gold", "snails", x, y)) {
-            return true;
-        }
-        if (binaryEquals(X, Y, "kools", "yellow", x, y)) {
-            return true;
-        }
-        if (X.equals("chesterfield") && Y.equals("fox") && Math.abs((int)x - (int)y) == 1) {
-            return true;
-        }
-        if (X.equals("kools") && Y.equals("horse") && Math.abs((int)x - (int)y) == 1) {
-            return true;
-        }
-        if (X.equals("lucky-strike") && Y.equals("orange juice") && x == y) {
-            return true;
-        }
-        if (X.equals("japanese") && Y.equals("parliament") && x == y) {
-            return true;
-        }
-        if (X.equals("norwegian") && Y.equals("blue") && Math.abs((int)x - (int)y) == 1) {
-            return true;
-        }
-
-        if (!x.equals(y)) {
-            return true;
-        }
-
-        return false;
+    private boolean adjacent(Object x, Object y) {
+        return Math.abs((int)x - (int)y) == 1;
     }
 
-    private boolean binaryEquals(Object X, Object Y, String xVal, String yVAl, Object x, Object y) {
-        if ((X.equals(xVal) && Y.equals(yVAl)) && x.equals(y)) {
-            return true;
-        }
-
-        return false;
+    private boolean pairEquals(Object X, Object Y, String val1, String val2) {
+        return X.equals(val1) && Y.equals(val2);
     }
 
     private static void addVar(String[] var, CSP csp) {
         for (String val : var) {
             csp.addDomain(val, domains);
-//            for (String val2 : var)
-//                if (!val.equals(val2))
-//                    csp.addArc(val, val2);
+            for (String val2 : var)
+                if (!val.equals(val2))
+                    csp.addArc(val, val2);
         }
     }
 
@@ -90,6 +77,7 @@ public class CSPZebra extends CSP {
         addVar(pets, csp);
         addVar(cigarettes, csp);
 
+        // filter (reassign limited) domains for variables for which we know the house
         csp.addDomain("milk", new Integer[] {3});
         csp.addDomain("norwegian", new Integer[] {1});
 
